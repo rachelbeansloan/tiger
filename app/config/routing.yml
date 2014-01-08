@@ -1,0 +1,2 @@
+_tiger:
+    resource: "@TigerBundle/Resources/config/routing.yml"

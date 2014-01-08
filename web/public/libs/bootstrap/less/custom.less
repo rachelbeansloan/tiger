@@ -1,0 +1,194 @@
+body {
+  background: @body-bg url('/public/images/layout/content_bg.png') right;
+}
+
+body.login {
+  background: #fff;
+    .outer_wrap {
+    background: @body-bg url('/public/images/layout/content_bg.png') right;
+    padding-bottom: 40px;
+  }
+}
+
+footer {
+  padding: 20px 0;
+  p {
+    font-size: .85em;
+    color: @link-highlight-color;
+    font-weight: bold;
+    margin-bottom: 10px;
+    line-height: 1.2em;
+  }
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+}
+
+span.valid {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  text-indent: -9999px;
+}
+span.error {
+  font-weight: bold;
+  color: #b94a48;
+  padding: 2px 8px;
+  margin-top: 2px;
+}
+
+.loading-indicator {
+  display: block;
+  margin: 10px auto;
+}
+
+#loadingModal {
+    .modal-dialog {
+      padding-top: 200px;
+    }
+}
+
+#header {
+  background-image: url('/public/images/layout/top_bg.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 115px;
+  border-radius: 0px;
+  overflow: hidden;
+
+    .panel {
+      position: absolute;
+      margin: 10px 0;
+      &.left {
+        padding: 10px 30px 10px 100px;
+        left: -10px;
+      }  
+      &.right {
+        padding: 10px 100px 10px 20px;
+        right: -10px;
+        top: 20px;
+      }
+      .panel-body {
+        padding: 0px;
+      }
+    }
+
+     .logo {
+         background: url('/public/images/layout/logo.png');
+         display: inline-block;
+         text-indent: -9999px;
+         height: 65px;
+         width: 305px;
+    }
+
+    .highlight {
+      color: #e2ceb6;
+    }
+
+}
+
+.highlight {
+  color: @highlight;
+}
+
+.spacerV30 {
+  margin: 0px 30px;
+}
+
+.spacerLg {
+  height: 50px;
+}
+
+.spacerMd {
+  height: 30px;
+}
+
+.spacerSm {
+  height: 15px;
+}
+
+.m20 {
+  margin: 20px;
+}
+
+.wrapper {
+  width: 100%;
+  min-height: 400px;
+  background-color:rgba(255,255,255,0.4);
+  .container {
+    padding: 25px 0;
+  }
+}
+
+.navbar { margin-bottom: 0;}
+
+.bread {
+  height: 40px;
+  line-height: 40px;
+  font-size: 1.4em;
+  color: #fff;
+  text-shadow: 2px 0 rgba(0,0,0,0.2);;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+
+#manage_practices, #edit_practice_users, #manage_users, #edit_user_practices, #view_history, .practice_table {
+  .box {
+    padding: 10px 0 10px 0;
+    h5, h6 {
+      padding: 0px 10px 10px 10px;
+    }
+    table {
+      position: relative;
+      .name a {
+       display: block;
+       background: transparent url('/public/images/layout/icon_practice.png') left center no-repeat;
+       padding-left: 30px;
+       }
+    }
+  }  
+}
+
+#edit_practice_users, #edit_user_practices {
+  .box {
+  table {
+     a.remove {
+      display: inline-block;
+      color: @brand-danger;
+       background: transparent url('/public/images/layout/icon_remove.png') right center no-repeat;
+       padding-right: 20px;
+     }
+    .name a {
+       background: transparent url('/public/images/layout/icon_user.png') left center no-repeat;
+    }
+    .name.admin a {
+        background: transparent url('/public/images/layout/icon_user_admin.png') left center no-repeat;
+
+    }
+    } 
+  }
+}
+
+#manage_users {
+  .box {
+   table {
+       .name a {
+       background: transparent url('/public/images/layout/icon_user.png') left center no-repeat;
+      }
+     }
+   }
+}
+
+#view_history td.upload_data {
+   span {
+    display: inline-block;
+    padding: 5px 10px;
+    &.name {
+      width: 150px;
+    }
+   }
+}
