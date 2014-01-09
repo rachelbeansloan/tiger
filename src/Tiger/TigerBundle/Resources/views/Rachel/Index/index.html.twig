@@ -28,6 +28,7 @@
 
         <ul>
           <li>eWisdom Location and Reservation app
+            <div class="alert" id="statusBox"  style="display:none;"></div>
             <span class="info">Solo project: HTML, CSS, Javascript, xCode, Objective C (implemented, not written)
               <ul class="vertical">
                 <li><a href="#" id="previewEwisdom">Preview (Google Play listing)</a></li>
@@ -60,14 +61,12 @@ $('#downloadAPK').click(function(e){
 
         })
         .done(function(response) {
-            console.log('success');
             $('form [name=password]').val(password);
-
-            console.log( $('form [name=password]').val());
             $('form').submit();
         })
         .fail(function(response) {
-            alert('error: '+ response);
+            $('#statusBox').html('<p>Sorry: wrong password!</p>').addClass('alert-danger').css('margin-top', '10px').show();
+            window.setTimeout(function() { $("#statusBox").fadeOut('1000'); }, 5000);
         });
 
           
