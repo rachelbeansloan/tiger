@@ -2,9 +2,88 @@
 {% block title %}Rachel Sloan{% endblock %}
 {% block body %}
 
-    <ul>
-        <li><a href="http://stage.iccms.healthcare-learning.com/">ICCMS Admin Site</a></li>
-    </ul>    
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">  
+      <h3>Rachel Sloan ::: Work Examples</h3>
+      <div class="well">  
+        <h4>Sites:</h4>
+        <ul>
+          <li><a href="http://stage.iccms.healthcare-learning.com/" target="_new">ICCMS Admin Site</a>
+            <span class="info">Solo project/all aspects: HTML, CSS, Javascript, PHP, Symfony2, Doctrine, MySQL</span></li>
+          <li><a href="http://www.dentalhealth.org/" target="_new">British Dental Health Foundation</a><span class="info">Back end CMS for main carousel, slider, store products, and front-end implementation: HTML, Javascript, PHP, Smarty, MySQL </span></li>  
+        </ul> 
+      </div>  
+
+      <div class="well">  
+        <h4>Widgets/Applications:</h4>
+        <ul>
+          <li>Coming soon</li>
+        </ul>  
+      </div>
+        
+      <div class="well">    
+        <h4>Mobile Applications:</h4>
+
+        <ul>
+          <li>eWisdom Location and Reservation app
+            <span class="info">Solo project: HTML, CSS, Javascript, xCode, Objective C (implemented, not written)
+              <ul class="vertical">
+                <li><a href="#" id="previewEwisdom">Preview (Google Play listing)</a></li>
+                <li><a href="#" id="downloadAPK">Download .APK (password needed)</a></li>
+              </ul>  
+            </span>
+          </li>
+        </ul>
+      </div>  
+    </div><!-- col12 -->
+  </div><!-- row -->    
+</div><!-- container -->
+
+<form method="post" action="/download">
+    <input type="hidden" name="password"  />
+</form>
 
 
+
+<script type="text/javascript">
+
+$('#downloadAPK').click(function(e){
+    e.preventDefault();
+    bootbox.prompt("Confirm Password", function(password) {  
+
+        $.ajax({ 
+        type: "POST",
+        url: "/downloadApp", 
+        data: { password: password }
+
+        })
+        .done(function(response) {
+            console.log('success');
+            $('form [name=password]').val(password);
+
+            console.log( $('form [name=password]').val());
+            $('form').submit();
+        })
+        .fail(function(response) {
+            alert('error: '+ response);
+        });
+
+          
+    });
+});
+
+$('#previewEwisdom').click(function(e){
+    e.preventDefault();
+    $('#customModal .modal-dialog').css('width', '800');
+    $('#customModal .modal-header h4').text('eWisdom Mobile App');
+    $('#customModal .modal-body').html('<img src="/public/img/rachel/portfolio/ewisdom_googleplay.png" alt="screenshot" />');
+    $('#customModal').modal();
+
+});
+
+
+
+</script>
 {% endblock %}
