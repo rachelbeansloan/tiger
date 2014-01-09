@@ -1,0 +1,24 @@
+{% extends '::base.html.twig' %}
+
+{% block title "Contact form" %}
+
+{% block content %}
+
+{% for label, flashes in app.session.flashbag.all %}
+    {% for flash in flashes %}
+        <div class="alert alert-{{ label }}">
+            {{ flash }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+    <form action="{{ path('contact') }}" method="POST" id="contact_form">
+        {{ form_errors(form) }}
+
+        {{ form_row(form.email) }}
+        {{ form_row(form.message) }}
+
+        {{ form_rest(form) }}
+        <input type="submit" value="Send" class="symfony-button-grey" />
+    </form>
+{% endblock %}

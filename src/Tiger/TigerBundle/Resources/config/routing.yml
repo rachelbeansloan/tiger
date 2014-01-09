@@ -13,3 +13,7 @@ app_password:
 app_download:
     pattern:  /download
     defaults: { _controller: TigerBundle:Rachel/Index:Download }
+
+contact:
+    pattern:  /contact
+    defaults: { _controller: TigerBundle:Default:Contact }

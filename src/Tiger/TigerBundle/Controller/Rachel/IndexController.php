@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Tiger\TigerBundle\Form\ContactType;
+
 class IndexController extends Controller
 {
     /**
@@ -77,26 +79,43 @@ class IndexController extends Controller
             
     }
 
-    /**
-     * @Route("/contact", name="_demo_contact")
-     * @Template()
-     */
-    public function contactAction(Request $request)
-    {
-        $form = $this->createForm(new ContactType());
-        $form->handleRequest($request);
+/*
+ * @Route("/contact", _name="contact")
+ * @Template()
+ */
+public function contactAction(Request $request)
+{
+    $form = $this->createForm(new ContactType());
+
+    if ($request->isMethod('POST')) {
+        $form->bind($request);
 
         if ($form->isValid()) {
-            $mailer = $this->get('mailer');
+            $message = \Swift_Message::newInstance()
+                ->setSubject($form->get('subject')->getData())
+                ->setFrom($form->get('email')->getData())
+                ->setTo('rachel@tigerwebdev.com')
+                ->setBody(
+                    $this->renderView(
+                        'TigerBundle:Default:contact.html.twig',
+                        array(
+                            'ip' => $request->getClientIp(),
+                            'name' => $form->get('name')->getData(),
+                            'message' => $form->get('message')->getData()
+                        )
+                    )
+                );
 
-            // .. setup a message and send it
-            // http://symfony.com/doc/current/cookbook/email.html
+            $this->get('mailer')->send($message);
 
-            $request->getSession()->getFlashBag()->set('notice', 'Message sent!');
+            $request->getSession()->getFlashBag()->add('success', 'Your email has been sent! Thanks!');
 
-            return new RedirectResponse($this->generateUrl('_demo'));
+            return $this->redirect($this->generateUrl('contact'));
         }
-
-        return array('form' => $form->createView());
     }
+
+    return array(
+        'form' => $form->createView()
+    );
+}
 }
