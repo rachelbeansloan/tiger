@@ -6,15 +6,18 @@ namespace Tiger\TigerBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 // these import the "@Route" and "@Template" annotations
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Tiger\TigerBundle\Form\ContactType;
+
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="_demo")
+     * @Route("/", name="home")
      * @Template()
      */
     public function indexAction()
@@ -23,34 +26,44 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/hello/{name}", name="_demo_hello")
-     * @Template()
-     */
-    public function helloAction($name)
-    {
-        return array('name' => $name);
-    }
-
-    /**
-     * @Route("/contact", name="_demo_contact")
+     * @Route("/contact", _name="contact")
      * @Template()
      */
     public function contactAction(Request $request)
     {
         $form = $this->createForm(new ContactType());
-        $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $mailer = $this->get('mailer');
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
 
-            // .. setup a message and send it
-            // http://symfony.com/doc/current/cookbook/email.html
+            if ($form->isValid()) {
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($form->get('subject')->getData())
+                    ->setFrom($form->get('email')->getData())
+                    ->setTo('rachel@tigerwebdev.com')
+                    ->setBody(
+                        $this->renderView(
+                            'TigerBundle:Email:contact.txt.twig',
+                            array(
+                                'ip' => $request->getClientIp(),
+                                'name' => $form->get('name')->getData(),
+                                'message' => $form->get('message')->getData()
+                            )
+                        )
+                    );
 
-            $request->getSession()->getFlashBag()->set('notice', 'Message sent!');
+                $this->get('mailer')->send($message);
 
-            return new RedirectResponse($this->generateUrl('_demo'));
+                $request->getSession()->getFlashBag()->add('success', 'Your email has been sent! Thanks!');
+
+                return $this->redirect($this->generateUrl('contact'));
+            }
         }
 
-        return array('form' => $form->createView());
+
+        return array(
+            'form' => $form->createView()
+        );
+
     }
 }

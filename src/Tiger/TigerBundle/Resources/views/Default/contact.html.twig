@@ -2,23 +2,32 @@
 
 {% block title "Contact form" %}
 
-{% block content %}
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">  
 
-{% for label, flashes in app.session.flashbag.all %}
-    {% for flash in flashes %}
-        <div class="alert alert-{{ label }}">
-            {{ flash }}
-        </div>
+        <h3>Contact:</h3>
+    {% for label, flashes in app.session.flashbag.all %}
+        {% for flash in flashes %}
+            <div class="alert alert-{{ label }}">
+                {{ flash }}
+            </div>
+        {% endfor %}
     {% endfor %}
-{% endfor %}
 
-    <form action="{{ path('contact') }}" method="POST" id="contact_form">
-        {{ form_errors(form) }}
+        <form action="{{ path('contact') }}" method="POST" id="contact_form" class="form-horizontal">
+            {{ form_errors(form) }}
 
-        {{ form_row(form.email) }}
-        {{ form_row(form.message) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.subject) }}
+            {{ form_row(form.message) }}
 
-        {{ form_rest(form) }}
-        <input type="submit" value="Send" class="symfony-button-grey" />
-    </form>
+            {{ form_rest(form) }}
+            <div class="text-right"><input type="submit" value="Send" class="btn btn-primary" /></div>
+        </form>
+    </div>
+  </div>  
+</div>        
 {% endblock %}

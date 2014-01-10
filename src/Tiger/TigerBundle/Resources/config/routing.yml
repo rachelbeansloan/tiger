@@ -16,4 +16,4 @@ app_download:
 
 contact:
     pattern:  /contact
-    defaults: { _controller: TigerBundle:Default:Contact }
+    defaults: { _controller: TigerBundle:Default:contact }
