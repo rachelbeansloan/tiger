@@ -1,0 +1,136 @@
+{% extends '::base.html.twig' %}
+{% block title %}Slideshow demonstration{% endblock %}
+{% block stylesheets %}
+    <link href="/public/css/portfolio.min.css" rel="stylesheet">
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+<div class="container" id="slideshow">
+  <div class="row">
+    <div class="col-md-3">  
+		<div class="slideshow-widget-wrapper">
+			<div class="slideshow-widget">
+				<div class="btns-move">
+					<span class="btn-prev" data-ref="{{album.0.prev}}">prev</span>
+					<span class="btn-next" data-ref="{{album.0.next}}">next</span>
+				</div>
+				
+				<span class="btn-play pause" data-ref="0"></span>
+
+				<ul class="img-array">
+					{% for img in album %}
+					<li data-ref="{{img.current}}" style="background-image: url({{img.url}});"></li>
+					{% endfor %}
+				</ul>			
+			</div><!-- end slideshow -->	
+			
+			<div class="slideshow-widget-controls">
+				{% for img in album %}
+				<span data-ref="{{img.current}}" class="dot"></span>
+				{% endfor %}
+			</div><!-- end controls -->	
+		</div><!-- end wrapper -->
+    </div>
+    <div class="col-md-offset-1 col-md-8">  
+      <h3>Controls:</h3>
+      <form class="form-horizontal" role="form">
+	  <div class="form-group">
+	    <label for="aspect" class="col-sm-3 control-label">Aspect:</label>
+	    <div class="col-sm-3">
+	      <select class="form-control" id="aspect">
+			<option value="100">1 x 1 (square)</option>
+			<option value="75">4 x 3</option>
+			<option value="125">3 x 4</option>
+		  </select>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="scale" class="col-sm-3 control-label">Scale:</label>
+	    <div class="col-sm-3">
+	      <select class="form-control" id="scale">
+			<option value="zoom">Zoom to fit</option>
+			<option value="crop_zoom">Zoom and crop</option>
+			<option value="original">Original</option>
+			<option value="stretch">Stretched</option>
+		  </select>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="duration" class="col-sm-3 control-label">Slide duration:</label>
+	    <div class="col-sm-3">
+	      <select class="form-control" id="duration">
+	      	{% for i in range(1, 10) %}
+	      	{% set n = i * 100 %}
+			    <option value="{{ n }}">{{ i }} second{% if i != '1' %}s{% endif %}</option>,
+			{% endfor %}
+		  </select>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="transSpeed" class="col-sm-3 control-label">Transition speed:</label>
+	    <div class="col-sm-3">
+	      <select class="form-control" id="transSpeed">
+	      	{% for i in range(5, 50, 5) %}
+	      	{% set n = i * 100 %}
+			    <option value="{{ n }}">{{ n }} ms</option>,
+			{% endfor %}
+		  </select>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="transType" class="col-sm-3 control-label">Transition type:</label>
+	    <div class="col-sm-3">
+	      <select class="form-control" id="transType">
+			<option value="fade">Fade</option>
+			<option value="dissolve">Dissolve</option>
+			<option value="scrollLeft">Scroll Left</option>
+			<option value="scrollRight">Scroll Right</option>
+			<option value="scrollUp">Scroll Up</option>
+			<option value="scrollDown">Scroll Down</option>
+			<option value="uncover">Uncover</option>
+			<option value="wipe">Wipe</option>
+			<option value="zoom">Zoom</option>
+			<option value="unfoldX">Unfold (vertical)</option>
+			<option value="unfold">Unfold (horizontal)</option>
+			<option value="curtain">Curtains (vertical)</option>
+			<option value="curtainH">Curtains (horizontal)</option>
+			<option value="growX">Grow (horizontal)</option>
+			<option value="growY">Grow (vertical)</option>
+			<option value="spin2d">Spin</option>
+			<option value="spinX3d">3D Spin</option>
+			<option value="spinY3d">3D Spin (vertical)</option>
+			<option value="turnLeft">Turn Left</option>
+			<option value="turnRight">Turn Right</option>
+			<option value="turnUp">Turn Up</option>
+			<option value="turnDown">Turn Down</option>
+			<option value="none">None</option>
+		  </select>
+	    </div>
+	  </div>
+      </form>	
+
+    </div> 	
+  </div>  
+</div>    
+<script src="/public/portfolio/js/mobileslideshow.js"></script>  
+<script type="text/javascript">
+$(document).ready(function()
+{
+	App.Album = {{ album|json_encode|raw }};
+	App.Slideshow.construct(App.Album);
+
+	$('form select').change(function(e){
+		var type = e.target.id,
+			value = e.target.value,
+			data = {};
+			data[type] = value;
+			App.Slideshow.construct(App.Album, data);
+
+	});
+
+
+});
+
+
+</script>
+{% endblock %}

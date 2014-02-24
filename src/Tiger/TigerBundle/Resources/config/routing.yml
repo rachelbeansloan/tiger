@@ -6,6 +6,10 @@ rachel:
     pattern:  /rachel
     defaults: { _controller: TigerBundle:Rachel/Index:index }
 
+slideshow:
+    pattern:  /rachel/slideshow
+    defaults: { _controller: TigerBundle:Rachel/Portfolio:slideshow }
+
 app_password:
     pattern:  /downloadApp
     defaults: { _controller: TigerBundle:Rachel/Index:checkPassword }

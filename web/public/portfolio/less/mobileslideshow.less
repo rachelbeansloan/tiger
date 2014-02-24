@@ -1,0 +1,77 @@
+.slideshow-widget {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    ul.img-array {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        li {
+            display: none;
+            position: absolute;
+            height: 400px;
+            width: 400px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            z-index: 1;
+        }
+    }
+
+    .btn-play {
+        display: none;
+        position: absolute;
+        cursor: pointer;
+        background: url('/public/portfolio/slideshow/images/play.png');
+        background-size: 100%;
+        width: 15%;
+        height: 14%;
+        top: 45%;
+        left: 45%;
+        z-index: 5;
+
+        &.pause {
+            background-image: url('/public/portfolio/slideshow/images/pause.png');
+        }
+    }
+
+    .btns-move {
+        display: block;
+        position: absolute;
+        z-index: 3;
+        left: 5px;
+        right: 5px;
+        top: 45%;
+        span {
+            height: 35px;
+            width: 35px;
+            text-indent: -9999px;
+            background-size: 100%;
+            display: inline-block;
+            &.btn-prev { float: left; background-image: url('/public/portfolio/slideshow/images/arrow-left.png'); }
+            &.btn-next { float: right; background-image: url('/public/portfolio/slideshow/images/arrow-right.png'); }
+        }
+    }
+    &:hover {
+        .btn-play { display: block; }
+    }
+    
+}
+
+.slideshow-widget-controls {
+
+    position: relative;
+    margin: -20px auto 0 auto;
+    text-align: center;
+    z-index: 10;
+    .dot{
+        display: inline-block;
+        width: 13px;
+        height: 14px;
+        background: url('/public/portfolio/slideshow/images/dot.png');
+
+      &.selected {
+        background-image: url('/public/portfolio/slideshow/images/dot-selected.png');
+      }  
+    }
+}
