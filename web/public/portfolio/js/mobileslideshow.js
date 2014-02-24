@@ -6,7 +6,7 @@
 		album: [],
 		aspect: 100,
 		scale: 'zoom',
-		duration: 3,
+		duration: 3000,
 		transSpeed: 1000,
 		transType: 'zoom',
 		showButtons: true,
@@ -15,13 +15,13 @@
 		allowLoop: true
 
 		},
-		construct: function (album, newdata)
+		construct: function (album)
 		{
+			var newdata = localStorage;
+
 			if(newdata) {
 				 $(this.el).find('.slideshow-widget li').stop(true, true);	
 				this.applyNewValues(newdata);
-
-				console.log(newdata);
 			}
 			
 			this.data.album = album;
@@ -35,6 +35,7 @@
 			$.each(data, function(key, value)
 			{
 				App.Slideshow.data[key] = value;
+				$('form #'+key+'').val(value);
 			});	
 		},
 
@@ -73,7 +74,6 @@
 			elAll =  $(this.el).find('.slideshow-widget li'),
 			data;
 			App.stopSlideShow = false;
-			App.startSlideShow = false;
 			App.paused = false;
 			t = null;
 
@@ -82,22 +82,14 @@
 			//set the individual slide width/height attributes based on window
 			that.setAspectProperties();
 
-			//check that we are in the editor before auto-playing, if so set to paused
-			if ($('html').find('body.tiger').length === 0)
-			{	
-				that.startSlideShow(0);	
+			that.startSlideShow(0);
+		
 
 				$(window).resize(that.debouncer(function (e) 
 				{
 					that.setAspectProperties();
 				}, 200));
-			}
-			else
-			{
-				//since we start paused in editor, switch play state
-				$(this.el).find('.btn-play').removeClass('pause');	
-				App.paused = true;
-			}	
+				
 
 			//set first image to selected state
 			$(this.el).find('.dot[data-ref="0"]').addClass('selected');
@@ -148,13 +140,20 @@
 							App.stopSlideShow = true;
 							that.setSlideInfo(ref);
 
+							App.Slideshow.setAspectProperties();
+
 							$(that.el).find('.slideshow-widget li.img-current').removeClass('img-current').hide();
 							$(that.el).find('.slideshow-widget li[data-ref='+ref+']').addClass('img-current').css({'left': '0px', 'top': '0px', 'margin': '0px', opacity: 1}).show();
+
 							
 							//check the slides are not paused before starting animations
 							if (!App.paused)
 							{
 								that.skipToSlide(ref, e);
+							}
+							else
+							{
+								$(that.el).find('.slideshow-widget li').css({'height': '','width': ''});
 							}	
 						}
 					}	
@@ -252,7 +251,7 @@
 		{
 			var that = this,
 				data = that.data,
-				duration = data.duration * 1000,
+				duration = parseInt(data.duration, 10),
 				lastImg = data.album.length - 1,
 				t2 = null;
 				
@@ -274,7 +273,7 @@
 		{
 			var that = this, t, 
 				data = that.data,
-				duration = Math.round(data.duration * 1000);
+				duration = Math.round(data.duration);
 
 				//set the ref globally so after time out it will only invoke the animation function for the last clicked				
 				App.skipToThis = ref;

@@ -7,7 +7,7 @@
 {% block body %}
 <div class="container" id="slideshow">
   <div class="row">
-    <div class="col-md-3">  
+    <div class="col-md-4">  
 		<div class="slideshow-widget-wrapper">
 			<div class="slideshow-widget">
 				<div class="btns-move">
@@ -31,9 +31,10 @@
 			</div><!-- end controls -->	
 		</div><!-- end wrapper -->
     </div>
-    <div class="col-md-offset-1 col-md-8">  
+    <div class="col-md-offset-1 col-md-7">  
       <h3>Controls:</h3>
       <form class="form-horizontal" role="form">
+      	<!--
 	  <div class="form-group">
 	    <label for="aspect" class="col-sm-3 control-label">Aspect:</label>
 	    <div class="col-sm-3">
@@ -54,13 +55,13 @@
 			<option value="stretch">Stretched</option>
 		  </select>
 	    </div>
-	  </div>
+	  </div> -->
 	  <div class="form-group">
 	    <label for="duration" class="col-sm-3 control-label">Slide duration:</label>
 	    <div class="col-sm-3">
 	      <select class="form-control" id="duration">
 	      	{% for i in range(1, 10) %}
-	      	{% set n = i * 100 %}
+	      	{% set n = i * 1000 %}
 			    <option value="{{ n }}">{{ i }} second{% if i != '1' %}s{% endif %}</option>,
 			{% endfor %}
 		  </select>
@@ -90,8 +91,8 @@
 			<option value="uncover">Uncover</option>
 			<option value="wipe">Wipe</option>
 			<option value="zoom">Zoom</option>
-			<option value="unfoldX">Unfold (vertical)</option>
-			<option value="unfold">Unfold (horizontal)</option>
+			<!--<option value="unfoldX">Unfold (vertical)</option>
+			<option value="unfold">Unfold (horizontal)</option> -->
 			<option value="curtain">Curtains (vertical)</option>
 			<option value="curtainH">Curtains (horizontal)</option>
 			<option value="growX">Grow (horizontal)</option>
@@ -107,6 +108,12 @@
 		  </select>
 	    </div>
 	  </div>
+	  <div class="form-group">
+	    <div class="col-sm-6">
+	    <input type="button" value="Reset to Defaults" class="btn btn-info resetShow" />
+	      <input type="button" value="Update Slideshow" class="btn pull-right btn-primary updateShow" />
+	    </div>
+	  </div>
       </form>	
 
     </div> 	
@@ -119,13 +126,21 @@ $(document).ready(function()
 	App.Album = {{ album|json_encode|raw }};
 	App.Slideshow.construct(App.Album);
 
+	$('form .updateShow').click(function() {
+		location.reload();
+	});
+
+	$('form .resetShow').click(function() {
+		localStorage.clear();
+		location.reload();
+	});
+
 	$('form select').change(function(e){
 		var type = e.target.id,
 			value = e.target.value,
 			data = {};
-			data[type] = value;
-			App.Slideshow.construct(App.Album, data);
-
+			localStorage[type] = value;
+			localStorage['changes'] = true;
 	});
 
 
