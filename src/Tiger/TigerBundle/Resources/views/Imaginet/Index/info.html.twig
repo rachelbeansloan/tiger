@@ -1,0 +1,22 @@
+{% extends 'TigerBundle::imaginet.html.twig' %}
+{% block title %}Example form results for Imaginet - by Rachel Sloan{% endblock %}
+{% block body %}
+
+<div class="row">
+	<div class="col-md-6 col-md-offset-3 col-sm-12">
+
+		<h1>Thank You!</h1>
+		<p>This is the information that you submitted:</p>
+
+		{% for key,value in results %}
+		<div class="row row-padded">
+
+			<div class="col-md-6 text-right"><strong>{{ key|replace({'_':' '}) }}</strong>:</div>
+			<div class="col-md-6">{{ value }}</div>
+		</div>
+
+		{% endfor %}
+	</div>
+</div>		
+
+{% endblock %}

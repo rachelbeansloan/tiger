@@ -1,0 +1,117 @@
+{% extends 'TigerBundle::imaginet.html.twig' %}
+{% block title %}Example form for Imaginet - by Rachel Sloan{% endblock %}
+    {% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/public/css/datepicker.css">
+    {% endblock %}
+{% block body %}
+
+
+<div class="row">
+	<div class="col-md-6 col-md-offset-3 col-sm-12">
+		<h1>Your Details</h1>
+		<p><small>Fields marked with <span class="required">*</span> are required</small></p>
+
+		<form role="form" method="POST" action="{{ path('imaginet') }}/info" id="infoForm">
+		  <div class="form-group">
+		    <label for="name">Full name:</label>
+		    <input type="email" class="form-control" name="Full name" id="name" placeholder="Enter email">
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label" for="email">Email address <span class="required">*</span>: <span class="error-info"></span></label>
+		    <input type="email" class="form-control" id="email" name="Email address" required placeholder="Enter email">
+		  </div>
+		  <div class="row">
+		  	<div class="col-md-6">
+			  <div class="form-group">
+			  	<label for="dateFrom">Date from:</label>
+			  	<input type="text" class="form-control" name="Date from" id="dateFrom" placeholder="{{today|date("d/m/Y") }}">
+			  </div>	
+			</div>  
+			<div class="col-md-6">
+			  <div class="form-group">
+			  	<label for="dateTo">Date to:</label>
+			  	<input type="text" class="form-control" name="Date to" id="dateTo" placeholder="Please select...">
+			  </div>	
+			</div>  
+		  </div>	  
+		  <div class="form-group">
+			  <label for="radio" class="minor">Here’s some lovely radio buttons.  Do you want to select an option?:</label>
+			  <div><span class="radio"><input type="radio" id="love" name="Do you want to select an option" value="yes"><label for="love"></label></span> Yes, I do.</div>
+			  <div><span class="radio"><input type="radio" id="nolove" name="Do you want to select an option" name="choice" value="no"><label for="nolove"></label></span> No, I don't.</div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label" for="password">Password <span class="required">*</span>: <span class="error-info"></span></label>
+		    <input type="password" name="Password" required class="form-control" id="password">
+		  </div>
+		  <div class="form-group">
+		  	<label class="minor">
+		  		<input type="checkbox" name="You really like checkboxes" value="Yes"> Please check this box if you really like check boxes
+		  	</label>	
+		  </div>
+		    <button type="submit" class="btn btn-primary btn-lg">Submit this form</button>
+
+		</form>  
+
+	</div>
+
+</div><!-- end row -->
+
+
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+$(function() {
+    $( "#dateFrom,#dateTo").datepicker({ dateFormat: "dd/mm/yy" });
+
+    $('form button').click(function(e){
+    	e.preventDefault();
+
+    	//remove any previous errors
+    	$('.error-info').text();
+    	$('.form-group').removeClass('has-error');
+
+    	//check the email and password are set
+    	var email = $('#email').val(),
+    		password = $('#password').val();
+
+    	if(email && password)
+    	{
+    		$('form').submit();
+    	}	
+    	else
+    	{
+    		//if not, display errors
+    		if(!email)
+    		{
+    			addErrors('email');
+    		}
+
+    		if(!password)
+    		{
+    			addErrors('password');
+    		}	
+    	}	
+
+    });
+
+    $('.radio input[type="radio"]').change(function(e)
+    {
+    	$('.radio').removeClass('selected');
+
+    	if ($(this).is(':checked')) {
+    		$(this).parent().addClass('selected');
+    	}
+    	
+    });
+
+    function addErrors(type)
+    {
+    	$('#'+type+'').closest('.form-group').addClass('has-error');
+    	$('#'+type+'').siblings().find('.error-info').text('Please fill out this field.');
+    }
+  });
+</script>
+{% endblock %}
+

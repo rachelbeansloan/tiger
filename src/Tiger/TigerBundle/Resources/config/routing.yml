@@ -21,3 +21,11 @@ app_download:
 contact:
     pattern:  /contact
     defaults: { _controller: TigerBundle:Default:contact }
+
+imaginet:
+    pattern:  /imaginet
+    defaults: { _controller: TigerBundle:Imaginet/Index:index }
+
+imaginet_info:
+    pattern:  /imaginet/info
+    defaults: { _controller: TigerBundle:Imaginet/Index:info }
